@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-const routes: Routes = [];
+export const routes: Routes = [
+    { path: 'programs', loadChildren: './main/programs/programs.module#ProgramsModule', },
+    { path: 'programs/:programId/activities', loadChildren: './main/activities/activities.module#ActivitiesModule', },
+    { path: '', redirectTo: 'programs', pathMatch: 'full' },
+    { path: '**', redirectTo: 'programs' }
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes, {
+        enableTracing: false, // <-- debugging purposes only
+        preloadingStrategy: PreloadAllModules
+    })],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

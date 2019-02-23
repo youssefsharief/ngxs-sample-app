@@ -4,11 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NgProgressModule } from '@ngx-progressbar/core';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AppInputsModule } from './components/ui-inputs/inputs.module';
 import { TitleComponent } from './components/title/title.component';
-import { NgProgressHttpModule } from '@ngx-progressbar/http';
 
 @NgModule({
   imports: [
@@ -18,10 +16,8 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
     HttpClientModule,
     RouterModule,
     MatSnackBarModule,
-    NgProgressModule,
     AppInputsModule,
-    PaginationModule.forRoot(),
-    NgProgressHttpModule
+    PaginationModule.forRoot()
   ],
   providers: [],
   exports: [
@@ -30,10 +26,9 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    NgProgressModule,
     AppInputsModule,
-    PaginationModule,
-    TitleComponent
+    TitleComponent,
+    PaginationModule
   ],
   declarations: [
     TitleComponent

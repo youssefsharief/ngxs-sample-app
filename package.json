@@ -27,6 +27,7 @@
     "@ngxs/store": "^3.3.4-dev.master-719afdb",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
+    "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
     "ngx-bootstrap": "^3.2.0",
     "rxjs": "~6.3.3",
