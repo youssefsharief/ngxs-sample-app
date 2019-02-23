@@ -1,18 +1,9 @@
-import { Action } from '@ngrx/store';
-
-export enum UiActionTypes {
-  ChangeProgramPage = '[UI] [Programs] Change page',
-  ChangeActivitiesPage = '[UI] [Activities] Change page',
+export class ChangeProgramPage {
+  static readonly type = '[UI] [Programs] Change page';
+  constructor(public pageNumber: number) { }
 }
 
-export class ChangeProgramPage implements Action {
-  readonly type = UiActionTypes.ChangeProgramPage;
-  constructor(public payload: number) { }
-}
-
-export class ChangeActivitiesPage implements Action {
-  readonly type = UiActionTypes.ChangeActivitiesPage;
-  constructor(public payload: {programId: number, pageNumber: number}) { }
-}
-
-export type UiActions = ChangeProgramPage | ChangeActivitiesPage;
+// export class ChangeActivitiesPage {
+//   static readonly type = '[UI] [Activities] Change page';
+//   constructor(public payload: {programId: number, pageNumber: number}) { }
+// }
