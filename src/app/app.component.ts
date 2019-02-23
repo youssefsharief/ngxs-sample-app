@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
 
-import { FetchData } from './main/main.actions';
+import { FetchData } from './main/main.state';
 
 @Component({
   selector: 'app-root',

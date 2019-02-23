@@ -11,6 +11,8 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { environment } from '../environments/environment';
 import { AppState } from './main/main.state';
+import { ProgramsState } from './main/programs/programs.state';
+import { UIState } from './main/ui/ui.state';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,7 @@ import { AppState } from './main/main.state';
     CoreModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgxsModule.forRoot([AppState], { developmentMode: !environment.production }),
+    NgxsModule.forRoot([AppState, ProgramsState, UIState], { developmentMode: !environment.production }),
     
     NgProgressModule,
     NgProgressHttpModule

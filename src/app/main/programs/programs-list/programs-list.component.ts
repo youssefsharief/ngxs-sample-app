@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Program } from 'src/app/core/models/program';
 import { Store, Select } from '@ngxs/store';
-import { ChangeProgramPage } from '../../ui/ui.actions';
-import { AppState } from '../../main.state';
+import { ProgramsState } from '../programs.state';
+import { ChangeProgramPage } from '../../ui/ui.state';
 
 @Component({
     selector: 'app-programs-list',
@@ -12,9 +12,9 @@ import { AppState } from '../../main.state';
 })
 export class ProgramsListComponent implements OnInit {
 
-    @Select(AppState.selectTenPrograms) programs$: Observable<Program[]>;
+    @Select(ProgramsState.selectTenPrograms) programs$: Observable<Program[]>;
     @Select(s => s.appstate.ui.programsPageNumber) currentPage$: Observable<number>;
-    @Select(AppState.selectProgramsCount) programsCount$: Observable<number>;
+    @Select(ProgramsState.selectProgramsCount) programsCount$: Observable<number>;
     constructor(private store: Store) { }
 
     ngOnInit() {
