@@ -1,0 +1,19 @@
+<form (ngSubmit)="onSubmit(form.value)" [formGroup]="form" *ngIf="form">
+
+  <app-default-input-layout label="Name" errorMessage="Please enter a valid name" [isDisplayingErrorMessage]="form.get('name').dirty && form.get('name').invalid">
+    <input type="text" name="name" class="form-control" formControlName="name">
+  </app-default-input-layout>
+
+  <app-default-input-layout label="Start Date">
+    <input name="expected_start_date" type="text" placeholder="Datepicker" class="form-control" formControlName="expected_start_date"
+      bsDatepicker [bsConfig]="datePickerConfig">
+  </app-default-input-layout>
+
+  <app-default-input-layout label="End Date">
+    <input name="expected_end_date" type="text" placeholder="Datepicker" class="form-control" formControlName="expected_end_date" bsDatepicker
+      [bsConfig]="datePickerConfig">
+  </app-default-input-layout>
+
+
+  <app-submit-button [isDisabled]="!form.valid"></app-submit-button>
+</form>

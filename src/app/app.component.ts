@@ -1,4 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngxs/store';
+
+import { FetchData } from './main/main.actions';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +10,9 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  title = 'ngxs-sample';
+  constructor(private store: Store) {}
+
+  ngOnInit() {
+    this.store.dispatch(new FetchData());
+  }
 }

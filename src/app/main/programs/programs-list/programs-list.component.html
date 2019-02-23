@@ -1,0 +1,37 @@
+<app-title>Programs</app-title>
+<div class="panel-body">
+    <div class="row">
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th class="text-center">Have Activities</th>
+                <th class="text-center">Activities Panel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of programs$ | async;">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.status}}</td>
+                <td class="text-center">
+                    {{(hasActivities(item.id) | async) ? 'Yes' : ''}}
+                </td>
+                <td class="text-center">
+                    <a class="link" [routerLink]="[item.id, 'activities']">
+                        <i class="fa fa-play-circle text-warning"> </i>
+                    </a>
+                </td>
+
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<div class="col-md-12">
+    <pagination [totalItems]="programsCount$ | async" [maxSize]="10" [ngModel]="currentPage$ | async" (pageChanged)="changePage($event)"></pagination>
+</div>

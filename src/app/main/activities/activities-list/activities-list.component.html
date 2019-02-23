@@ -1,0 +1,46 @@
+<app-title *ngIf="programName$ | async">
+    Activities for {{programName$ | async}}
+</app-title>
+<div class="panel-body">
+    <div class="row">
+    </div>
+    <h3 class="panel-title">
+        <button [routerLink]="['./', 'add']" class="btn btn-default">Add New Activity</button>
+    </h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of activities$ | async;">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{convertDate(item.expected_start_date)}}</td>
+                <td>{{convertDate(item.expected_end_date)}}</td>
+                <td class="text-center">
+                    <a class="link" [routerLink]="['./' , item.id]">
+                        <i class="fa fa-edit text-warning"> </i>
+                    </a>
+                </td>
+                <td class="text-center">
+                    <a class="link" href="javascript:void(0);" (click)="delete(item)">
+                        <i class="fa fa-trash text-danger"> </i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<div class="col-md-12">
+    <pagination [totalItems]="activitiesCount$ | async" [maxSize]="10" [ngModel]="currentPage$ | async" (pageChanged)="changePage($event)"></pagination>
+</div>
+<!-- [(ngModel)]="currentPage" (pageChanged)="fetchUsers($event)" -->
