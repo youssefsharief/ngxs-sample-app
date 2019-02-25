@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { environment } from '../environments/environment';
-// import { AppState } from './main/main.state';
 import { ProgramsState } from './main/programs/programs.state';
 import { SharedState } from './shared/shared.state';
 import { ActivitiesState } from './main/activities/activities.state';

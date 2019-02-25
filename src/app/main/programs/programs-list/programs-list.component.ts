@@ -13,7 +13,7 @@ import { ChangeProgramPage } from 'src/app/shared/shared.state';
 export class ProgramsListComponent implements OnInit {
 
     @Select(ProgramsState.selectTenPrograms) programs$: Observable<Program[]>;
-    @Select(s => s.appstate.ui.programsPageNumber) currentPage$: Observable<number>;
+    @Select(s => s.sharedstate.programsPageNumber) currentPage$: Observable<number>;
     @Select(ProgramsState.selectProgramsCount) programsCount$: Observable<number>;
     constructor(private store: Store) { }
 
