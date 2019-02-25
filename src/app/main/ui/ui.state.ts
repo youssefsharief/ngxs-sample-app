@@ -1,4 +1,4 @@
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
 
 import { ApiService } from 'src/app/core/services/api.service';
 
@@ -7,10 +7,10 @@ export class ChangeProgramPage {
     static readonly type = '[UI] [Programs] Change page';
     constructor(public pageNumber: number) { }
 }
-// export class ChangeActivitiesPage {
-//   static readonly type = '[UI] [Activities] Change page';
-//   constructor(public payload: {programId: number, pageNumber: number}) { }
-// }
+export class ChangeActivitiesPage {
+  static readonly type = '[UI] [Activities] Change page';
+  constructor(public programId: number, public pageNumber: number) { }
+}
 
 // Models
 export interface UIStateModel {
@@ -28,6 +28,15 @@ export interface UIStateModel {
 export class UIState {
     constructor(private api: ApiService) { }
 
+    static selectAtivitiesPageNumber(programId: number) {
+        return createSelector(
+            [UIState],
+            (state: UIStateModel) => {
+                return state.activitiesPageNumber[programId] || 1;
+            }
+        );
+    }
+
     @Action(ChangeProgramPage)
     changeProgramPage(ctx: StateContext<UIStateModel>, action: ChangeProgramPage) {
         ctx.patchState({
@@ -35,4 +44,14 @@ export class UIState {
         });
     }
 
+    @Action(ChangeActivitiesPage)
+    changeActivitiesPage(ctx: StateContext<UIStateModel>, action: ChangeActivitiesPage) {
+        const state = ctx.getState();
+        ctx.patchState({
+            activitiesPageNumber: {
+                ...state.activitiesPageNumber,
+                [action.programId]: action.pageNumber  
+            }
+        });
+    }
 }

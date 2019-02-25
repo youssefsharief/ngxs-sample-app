@@ -1,4 +1,4 @@
-import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 
 import { Program } from 'src/app/core/models/program';
@@ -24,17 +24,25 @@ export interface ProgramsStateModel {
 export class ProgramsState {
   constructor(private api: ApiService) { }
 
-  // TODO use another memoized selector to get programs
   @Selector([UIState])
   static selectTenPrograms(state: ProgramsStateModel, uiState: UIStateModel) {
     const firstIndex = (uiState.programsPageNumber - 1) * 10;
     return state.programs.slice(firstIndex, firstIndex + 10);
   }
 
-  // TODO use another memoized selector to get programs
   @Selector()
   static selectProgramsCount(state: ProgramsStateModel) {
     return state.programs.length;
+  }
+
+  static selectProgramName(programId: number) {
+    return createSelector(
+      [ProgramsState],
+      (state: ProgramsStateModel) => {
+        const program = state.programs.find((program: Program) => program.id === programId);
+        return program ? program.name : '';
+      }
+    );
   }
 
   @Action(FetchPrograms)

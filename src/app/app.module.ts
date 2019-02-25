@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { AppState } from './main/main.state';
 import { ProgramsState } from './main/programs/programs.state';
 import { UIState } from './main/ui/ui.state';
+import { ActivitiesState } from './main/activities/activities.state';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { UIState } from './main/ui/ui.state';
     CoreModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgxsModule.forRoot([AppState, ProgramsState, UIState], { developmentMode: !environment.production }),
+    NgxsModule.forRoot([AppState, ProgramsState, ActivitiesState, UIState], { developmentMode: !environment.production }),
     
     NgProgressModule,
     NgProgressHttpModule

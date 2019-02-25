@@ -1,6 +1,7 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { ProgramsState, FetchPrograms } from './programs/programs.state';
+import { FetchActivities, ActivitiesState } from './activities/activities.state';
 import { UIState } from './ui/ui.state';
 
 // Actions
@@ -17,13 +18,13 @@ export interface AppStateModel {
   name: 'appstate',
   defaults: {
   },
-  children: [ProgramsState, UIState]
+  children: [ProgramsState, ActivitiesState, UIState]
 })
 export class AppState {
   constructor() { }
 
   @Action(FetchData)
   fetchData(ctx: StateContext<AppStateModel>) {
-    ctx.dispatch(new FetchPrograms());
+    ctx.dispatch([new FetchPrograms(), new FetchActivities]);
   }
 }
