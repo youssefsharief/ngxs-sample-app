@@ -1,5 +1,5 @@
-import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { State, Action, StateContext, Selector, createSelector, Store } from '@ngxs/store';
+import { tap, map } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
@@ -9,15 +9,15 @@ import { addProgramIdProp, addWorkflowLevel1Prop } from 'src/app/core/services/u
 // Actions
 export class DeleteActivity {
   static readonly type = '[API] Delete Activity';
-  constructor(public activityId: number) {}
+  constructor(public activityId: number) { }
 }
 export class AddActivity {
   static readonly type = '[API] Add Activity';
-  constructor(public activity: Activity, public programId: number) {}
+  constructor(public activity: Activity, public programId: number) { }
 }
 export class EditActivity {
   static readonly type = '[API] Edit Activity';
-  constructor(public activityId: number, public activity: Activity, public programId: number) {}
+  constructor(public activityId: number, public activity: Activity, public programId: number) { }
 }
 
 // Models
@@ -32,43 +32,36 @@ export interface ActivitiesStateModel {
   }
 })
 export class ActivitiesState {
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private store: Store) { }
 
-  static selectActivityByActivityId(activityId: number) {
-    return createSelector(
-      [ActivitiesState],
-      (state: ActivitiesStateModel) => {
-        return state.activities.find((activity: Activity) => activity.id === activityId);
-      }
-    );
+  @Selector()
+  static selectActivityByActivityId(state: ActivitiesStateModel) {
+    return (activityId: number) => {
+      return state.activities.find((activity: Activity) => activity.id === activityId);
+    };
   }
 
-  static selectProgramActivities(programId: number) {
-    return createSelector(
-      [ActivitiesState],
-      (state: ActivitiesStateModel) => {
-        return state.activities.filter((activity: Activity) => activity.programId === programId);
-      }
-    );
+  @Selector()
+  static selectProgramActivities(state: ActivitiesStateModel) {
+    return (programId: number) => {
+      return state.activities.filter((activity: Activity) => activity.programId === programId);
+    };
   }
 
-  static selectTenActivities(programId: number) {
-    return createSelector(
-      [ActivitiesState, SharedState],
-      (state: ActivitiesStateModel, sharedState: SharedStateModel) => {
-        const firstIndex = (SharedState.selectAtivitiesPageNumber(programId)(sharedState) - 1) * 10;
-        return this.selectProgramActivities(programId)(state).slice(firstIndex, firstIndex + 10);
-      }
-    );
+  @Selector([SharedState])
+  static selectTenActivities(state: ActivitiesStateModel, sharedState: SharedStateModel) {
+    return (programId: number) => {
+      const pageNumber = SharedState.selectAtivitiesPageNumber(sharedState)(programId);
+      const firstIndex = (pageNumber - 1) * 10;
+      return this.selectProgramActivities(state)(programId).slice(firstIndex, firstIndex + 10);
+    };
   }
 
-  static selectActivitiesCount(programId: number) {
-    return createSelector(
-      [ActivitiesState],
-      (state: ActivitiesStateModel) => {
-        return this.selectProgramActivities(programId)(state).length;
-      }
-    );
+  @Selector()
+  static selectActivitiesCount(state: ActivitiesStateModel) {
+    return (programId: number) => {
+      return this.selectProgramActivities(state)(programId).length;
+    };
   }
 
   @Action(FetchData)
@@ -100,7 +93,7 @@ export class ActivitiesState {
       tap((activity: Activity) => {
         const state = ctx.getState();
         ctx.patchState({
-          activities: [ ...state.activities, addProgramIdProp(activity) ]
+          activities: [...state.activities, addProgramIdProp(activity)]
         });
       })
     );
@@ -112,7 +105,7 @@ export class ActivitiesState {
       tap((activity: Activity) => {
         const state = ctx.getState();
         const index = state.activities.findIndex(activity => activity.id === action.activityId);
-        const activities = [ ...state.activities ];
+        const activities = [...state.activities];
         activities[index] = addProgramIdProp(activity);
         ctx.patchState({
           activities: activities

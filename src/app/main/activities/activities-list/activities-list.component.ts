@@ -8,6 +8,7 @@ import { convertDateToReadableForm } from 'src/app/core/services/date-utility';
 import { ActivitiesState, DeleteActivity } from '../activities.state';
 import { ProgramsState } from '../../programs/programs.state';
 import { ChangeActivitiesPage, SharedState } from 'src/app/shared/shared.state';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-activities-list',
@@ -27,10 +28,10 @@ export class ActivitiesListComponent implements OnInit {
 
   ngOnInit() {
     this.programId = parseInt(this.route.snapshot.params['programId'], 10);
-    this.activities$ = this.store.select(ActivitiesState.selectTenActivities(this.programId));
-    this.activitiesCount$ = this.store.select(ActivitiesState.selectActivitiesCount(this.programId));
-    this.currentPage$ = this.store.select(SharedState.selectAtivitiesPageNumber(this.programId));
-    this.programName$ = this.store.select(ProgramsState.selectProgramName(this.programId));
+    this.activities$ = this.store.select(ActivitiesState.selectTenActivities).pipe(map(fn => fn(this.programId)));
+    this.activitiesCount$ = this.store.select(ActivitiesState.selectActivitiesCount).pipe(map(fn => fn(this.programId)));
+    this.currentPage$ = this.store.select(SharedState.selectAtivitiesPageNumber).pipe(map(fn => fn(this.programId)));
+    this.programName$ = this.store.select(ProgramsState.selectProgramName).pipe(map(fn => fn(this.programId)));
   }
 
   changePage(e: { page: number }) {

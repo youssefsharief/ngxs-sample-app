@@ -32,15 +32,13 @@ export interface SharedStateModel {
 export class SharedState {
     constructor(private api: ApiService) { }
 
-    static selectAtivitiesPageNumber(programId: number) {
-        return createSelector(
-            [SharedState],
-            (state: SharedStateModel) => {
-                return state.activitiesPageNumber[programId] || 1;
-            }
-        );
+    @Selector() 
+    static selectAtivitiesPageNumber(state: SharedStateModel) {
+        return (programId: number) => {
+            return state.activitiesPageNumber[programId] || 1;
+        };
     }
-
+    
     @Action(ChangeProgramPage)
     changeProgramPage(ctx: StateContext<SharedStateModel>, action: ChangeProgramPage) {
         ctx.patchState({

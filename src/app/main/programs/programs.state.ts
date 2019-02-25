@@ -1,4 +1,4 @@
-import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 
 import { Program } from 'src/app/core/models/program';
@@ -33,14 +33,12 @@ export class ProgramsState {
     return state.programs.length;
   }
 
-  static selectProgramName(programId: number) {
-    return createSelector(
-      [ProgramsState],
-      (state: ProgramsStateModel) => {
-        const program = state.programs.find((program: Program) => program.id === programId);
-        return program ? program.name : '';
-      }
-    );
+  @Selector() 
+  static selectProgramName(state: ProgramsStateModel) {
+    return (programId: number) => {
+      const program = state.programs.find((program: Program) => program.id === programId);
+      return program ? program.name : '';
+    };
   }
 
   @Action(FetchData)

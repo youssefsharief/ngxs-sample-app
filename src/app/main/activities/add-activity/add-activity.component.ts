@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ProgramsState } from '../../programs/programs.state';
 import { AddActivity } from '../activities.state';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-add-activity',
@@ -22,7 +23,7 @@ export class AddActivityComponent implements OnInit {
 
     ngOnInit() {
         this.programId = parseInt(this.route.snapshot.params['programId'], 10);
-        this.programName$ = this.store.select(ProgramsState.selectProgramName(this.programId));
+        this.programName$ = this.store.select(ProgramsState.selectProgramName).pipe(map(fn => fn(this.programId)));
     }
 
     onSubmitted(x: Activity) {
