@@ -10,6 +10,10 @@ import { addProgramIdProp } from 'src/app/core/services/utility';
 export class FetchActivities {
   static readonly type = '[API] Fetch Activities';
 }
+export class DeleteActivity {
+  static readonly type = '[API] Delete Activity';
+  constructor(public activityId: number) {}
+}
 
 // Models
 export interface ActivitiesStateModel {
@@ -59,6 +63,18 @@ export class ActivitiesState {
       tap((activities: Activity[]) => {
         ctx.patchState({
           activities: activities.map(activity => addProgramIdProp(activity))
+        });
+      })
+    );
+  }
+
+  @Action(DeleteActivity)
+  deleteActivity(ctx: StateContext<ActivitiesStateModel>, action: DeleteActivity) {
+    return this.api.deleteActivity(action.activityId).pipe(
+      tap((activityId: number) => {
+        const state = ctx.getState();
+        ctx.patchState({
+          activities: state.activities.filter(activity => activity.id !== action.activityId)
         });
       })
     );

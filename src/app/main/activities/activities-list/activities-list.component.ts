@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 
 import { Activity } from 'src/app/core/models/Activity';
 import { convertDateToReadableForm } from 'src/app/core/services/date-utility';
-import { ActivitiesState } from '../activities.state';
+import { ActivitiesState, DeleteActivity } from '../activities.state';
 import { ProgramsState } from '../../programs/programs.state';
 import { ChangeActivitiesPage, UIState } from '../../ui/ui.state';
 
@@ -42,7 +42,7 @@ export class ActivitiesListComponent implements OnInit {
   }
 
   delete(activity) {
-    // return this.store.dispatch(new DeleteActivity(activity.id));
+    return this.store.dispatch(new DeleteActivity(activity.id));
   }
 
 
