@@ -7,7 +7,7 @@ import { Activity } from 'src/app/core/models/Activity';
 import { convertDateToReadableForm } from 'src/app/core/services/date-utility';
 import { ActivitiesState, DeleteActivity } from '../activities.state';
 import { ProgramsState } from '../../programs/programs.state';
-import { ChangeActivitiesPage, UIState } from '../../ui/ui.state';
+import { ChangeActivitiesPage, SharedState } from 'src/app/shared/shared.state';
 
 @Component({
   selector: 'app-activities-list',
@@ -29,7 +29,7 @@ export class ActivitiesListComponent implements OnInit {
     this.programId = parseInt(this.route.snapshot.params['programId'], 10);
     this.activities$ = this.store.select(ActivitiesState.selectTenActivities(this.programId));
     this.activitiesCount$ = this.store.select(ActivitiesState.selectActivitiesCount(this.programId));
-    this.currentPage$ = this.store.select(UIState.selectAtivitiesPageNumber(this.programId));
+    this.currentPage$ = this.store.select(SharedState.selectAtivitiesPageNumber(this.programId));
     this.programName$ = this.store.select(ProgramsState.selectProgramName(this.programId));
   }
 

@@ -1,8 +1,12 @@
 import { State, Action, StateContext, Selector, createSelector } from '@ngxs/store';
 
-import { ApiService } from 'src/app/core/services/api.service';
+import { ApiService } from '../core/services/api.service';
 
 // Actions
+export class FetchData {
+    static readonly type = '[API] Fetch Data';
+}
+
 export class ChangeProgramPage {
     static readonly type = '[UI] [Programs] Change page';
     constructor(public pageNumber: number) { }
@@ -13,39 +17,39 @@ export class ChangeActivitiesPage {
 }
 
 // Models
-export interface UIStateModel {
+export interface SharedStateModel {
     programsPageNumber: number;
     activitiesPageNumber: { [s: string]: number; };
 }
 
-@State<UIStateModel>({
-    name: 'uistate',
+@State<SharedStateModel>({
+    name: 'sharedstate',
     defaults: {
         programsPageNumber: 1,
         activitiesPageNumber: {}
     }
 })
-export class UIState {
+export class SharedState {
     constructor(private api: ApiService) { }
 
     static selectAtivitiesPageNumber(programId: number) {
         return createSelector(
-            [UIState],
-            (state: UIStateModel) => {
+            [SharedState],
+            (state: SharedStateModel) => {
                 return state.activitiesPageNumber[programId] || 1;
             }
         );
     }
 
     @Action(ChangeProgramPage)
-    changeProgramPage(ctx: StateContext<UIStateModel>, action: ChangeProgramPage) {
+    changeProgramPage(ctx: StateContext<SharedStateModel>, action: ChangeProgramPage) {
         ctx.patchState({
             programsPageNumber: action.pageNumber
         });
     }
 
     @Action(ChangeActivitiesPage)
-    changeActivitiesPage(ctx: StateContext<UIStateModel>, action: ChangeActivitiesPage) {
+    changeActivitiesPage(ctx: StateContext<SharedStateModel>, action: ChangeActivitiesPage) {
         const state = ctx.getState();
         ctx.patchState({
             activitiesPageNumber: {

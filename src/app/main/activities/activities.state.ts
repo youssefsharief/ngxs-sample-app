@@ -2,14 +2,11 @@ import { State, Action, StateContext, Selector, createSelector } from '@ngxs/sto
 import { tap } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/services/api.service';
-import { UIStateModel, UIState } from '../ui/ui.state';
+import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
 import { Activity } from 'src/app/core/models/activity';
 import { addProgramIdProp, addWorkflowLevel1Prop } from 'src/app/core/services/utility';
 
 // Actions
-export class FetchActivities {
-  static readonly type = '[API] Fetch Activities';
-}
 export class DeleteActivity {
   static readonly type = '[API] Delete Activity';
   constructor(public activityId: number) {}
@@ -57,9 +54,9 @@ export class ActivitiesState {
 
   static selectTenActivities(programId: number) {
     return createSelector(
-      [ActivitiesState, UIState],
-      (state: ActivitiesStateModel, uiState: UIStateModel) => {
-        const firstIndex = (UIState.selectAtivitiesPageNumber(programId)(uiState) - 1) * 10;
+      [ActivitiesState, SharedState],
+      (state: ActivitiesStateModel, sharedState: SharedStateModel) => {
+        const firstIndex = (SharedState.selectAtivitiesPageNumber(programId)(sharedState) - 1) * 10;
         return this.selectProgramActivities(programId)(state).slice(firstIndex, firstIndex + 10);
       }
     );
@@ -74,7 +71,7 @@ export class ActivitiesState {
     );
   }
 
-  @Action(FetchActivities)
+  @Action(FetchData)
   fetchData(ctx: StateContext<ActivitiesStateModel>) {
     return this.api.getActivities().pipe(
       tap((activities: Activity[]) => {

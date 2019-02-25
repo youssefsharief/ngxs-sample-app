@@ -3,12 +3,10 @@ import { tap } from 'rxjs/operators';
 
 import { Program } from 'src/app/core/models/program';
 import { ApiService } from 'src/app/core/services/api.service';
-import { UIStateModel, UIState } from '../ui/ui.state';
+import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
 
 // Actions
-export class FetchPrograms {
-  static readonly type = '[API] Fetch Programs';
-}
+
 
 // Models
 export interface ProgramsStateModel {
@@ -24,9 +22,9 @@ export interface ProgramsStateModel {
 export class ProgramsState {
   constructor(private api: ApiService) { }
 
-  @Selector([UIState])
-  static selectTenPrograms(state: ProgramsStateModel, uiState: UIStateModel) {
-    const firstIndex = (uiState.programsPageNumber - 1) * 10;
+  @Selector([SharedState])
+  static selectTenPrograms(state: ProgramsStateModel, sharedState: SharedStateModel) {
+    const firstIndex = (sharedState.programsPageNumber - 1) * 10;
     return state.programs.slice(firstIndex, firstIndex + 10);
   }
 
@@ -45,7 +43,7 @@ export class ProgramsState {
     );
   }
 
-  @Action(FetchPrograms)
+  @Action(FetchData)
   fetchData(ctx: StateContext<ProgramsStateModel>) {
     return this.api.getPrograms().pipe(
       tap((programs: Program[]) => {
