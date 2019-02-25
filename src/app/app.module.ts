@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { ProgramsState } from './main/programs/programs.state';
 import { SharedState } from './shared/shared.state';
 import { ActivitiesState } from './main/activities/activities.state';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ActivitiesState } from './main/activities/activities.state';
     BrowserAnimationsModule,
     NgxsModule.forRoot([ProgramsState, ActivitiesState, SharedState], { developmentMode: !environment.production }),
     
+    HttpClientModule,
     NgProgressModule,
     NgProgressHttpModule
   ],

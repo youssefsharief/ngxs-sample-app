@@ -14,7 +14,6 @@ import { TitleComponent } from './components/title/title.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule,
     MatSnackBarModule,
     AppInputsModule,
     PaginationModule.forRoot()
@@ -22,10 +21,8 @@ import { TitleComponent } from './components/title/title.component';
   providers: [],
   exports: [
     CommonModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
     AppInputsModule,
     TitleComponent,
     PaginationModule

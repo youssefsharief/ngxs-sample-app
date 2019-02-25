@@ -1,9 +1,11 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import { Program } from 'src/app/core/models/program';
 import { ApiService } from 'src/app/core/services/api.service';
 import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
+import { SnackBarService } from 'src/app/core/services/snackbar.service';
+import { of } from 'rxjs';
 
 // Actions
 
@@ -20,7 +22,7 @@ export interface ProgramsStateModel {
   }
 })
 export class ProgramsState {
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private sb: SnackBarService) { }
 
   @Selector([SharedState])
   static selectTenPrograms(state: ProgramsStateModel, sharedState: SharedStateModel) {
@@ -33,7 +35,7 @@ export class ProgramsState {
     return state.programs.length;
   }
 
-  @Selector() 
+  @Selector()
   static selectProgramName(state: ProgramsStateModel) {
     return (programId: number) => {
       const program = state.programs.find((program: Program) => program.id === programId);
@@ -49,6 +51,10 @@ export class ProgramsState {
         ctx.patchState({
           programs: programs
         });
+      }),
+      catchError(err => {
+        this.sb.emitErrorSnackBar();
+        return of([]);
       })
     );
   }

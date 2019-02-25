@@ -1,10 +1,12 @@
 import { State, Action, StateContext, Selector, createSelector, Store } from '@ngxs/store';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, catchError } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/services/api.service';
 import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
 import { Activity } from 'src/app/core/models/activity';
 import { addProgramIdProp, addWorkflowLevel1Prop } from 'src/app/core/services/utility';
+import { of } from 'rxjs';
+import { SnackBarService } from 'src/app/core/services/snackbar.service';
 
 // Actions
 export class DeleteActivity {
@@ -32,7 +34,7 @@ export interface ActivitiesStateModel {
   }
 })
 export class ActivitiesState {
-  constructor(private api: ApiService, private store: Store) { }
+  constructor(private api: ApiService, private sb: SnackBarService) { }
 
   @Selector()
   static selectActivityByActivityId(state: ActivitiesStateModel) {
@@ -71,6 +73,10 @@ export class ActivitiesState {
         ctx.patchState({
           activities: activities.map(activity => addProgramIdProp(activity))
         });
+      }),
+      catchError(err => {
+        this.sb.emitErrorSnackBar();
+        return of([]);
       })
     );
   }
