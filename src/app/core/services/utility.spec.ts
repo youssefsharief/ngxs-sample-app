@@ -1,5 +1,5 @@
 import { tenBasedOnPageNumber, addProgramIdProp, addWorkflowLevel1Prop } from './utility';
-import { Activity } from 'src/app/activities/models/Activity';
+import { Activity } from '../models/Activity';
 
 describe('Utility', () => {
     describe('tenBasedOnPageNumber', () => {

@@ -3,9 +3,10 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { Program } from 'src/app/core/models/program';
 import { ApiService } from 'src/app/core/services/api.service';
-import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
+import { SharedStateModel, SharedState } from 'src/app/shared/shared.state';
 import { SnackBarService } from 'src/app/core/services/snackbar.service';
 import { of } from 'rxjs';
+import { FetchData } from 'src/app/shared/shared.actions';
 
 // Actions
 

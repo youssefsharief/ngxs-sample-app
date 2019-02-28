@@ -5,10 +5,12 @@ import { Select, Store } from '@ngxs/store';
 
 import { Activity } from 'src/app/core/models/Activity';
 import { convertDateToReadableForm } from 'src/app/core/services/date-utility';
-import { ActivitiesState, DeleteActivity } from '../activities.state';
+import { ActivitiesState } from '../activities.state';
 import { ProgramsState } from '../../programs/programs.state';
-import { ChangeActivitiesPage, SharedState } from 'src/app/shared/shared.state';
+import { SharedState } from 'src/app/shared/shared.state';
 import { map } from 'rxjs/operators';
+import { DeleteActivity } from '../activities.actions';
+import { ChangeActivitiesPage } from 'src/app/shared/shared.actions';
 
 @Component({
   selector: 'app-activities-list',

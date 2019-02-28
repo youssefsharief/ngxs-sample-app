@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { FetchData } from './shared/shared.actions';
 
-import { FetchData } from './shared/shared.state';
 
 @Component({
   selector: 'app-root',

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Program } from 'src/app/core/models/program';
 import { Store, Select } from '@ngxs/store';
 import { ProgramsState } from '../programs.state';
-import { ChangeProgramPage } from 'src/app/shared/shared.state';
+import { ChangeProgramPage } from 'src/app/shared/shared.actions';
 
 @Component({
     selector: 'app-programs-list',

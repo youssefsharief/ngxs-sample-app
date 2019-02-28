@@ -5,8 +5,9 @@ import { Observable } from 'rxjs';
 import { Activity } from 'src/app/core/models/Activity';
 import { Store } from '@ngxs/store';
 import { ProgramsState } from '../../programs/programs.state';
-import { ActivitiesState, EditActivity } from '../activities.state';
+import { ActivitiesState } from '../activities.state';
 import { map } from 'rxjs/operators';
+import { EditActivity } from '../activities.actions';
 
 @Component({
     selector: 'app-edit-activity',

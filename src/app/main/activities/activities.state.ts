@@ -1,28 +1,17 @@
 import { State, Action, StateContext, Selector, createSelector, Store } from '@ngxs/store';
-import { tap, map, catchError } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/core/services/api.service';
-import { SharedStateModel, SharedState, FetchData } from 'src/app/shared/shared.state';
+import { SharedStateModel, SharedState } from 'src/app/shared/shared.state';
 import { Activity } from 'src/app/core/models/activity';
 import { addProgramIdProp, addWorkflowLevel1Prop } from 'src/app/core/services/utility';
 import { of } from 'rxjs';
 import { SnackBarService } from 'src/app/core/services/snackbar.service';
+import { AddActivity, DeleteActivity, EditActivity } from './activities.actions';
+import { FetchData } from 'src/app/shared/shared.actions';
 
-// Actions
-export class DeleteActivity {
-  static readonly type = '[API] Delete Activity';
-  constructor(public activityId: number) { }
-}
-export class AddActivity {
-  static readonly type = '[API] Add Activity';
-  constructor(public activity: Activity, public programId: number) { }
-}
-export class EditActivity {
-  static readonly type = '[API] Edit Activity';
-  constructor(public activityId: number, public activity: Activity, public programId: number) { }
-}
 
-// Models
+
 export interface ActivitiesStateModel {
   activities: Activity[];
 }
@@ -38,9 +27,7 @@ export class ActivitiesState {
 
   @Selector()
   static selectActivityByActivityId(state: ActivitiesStateModel) {
-    return (activityId: number) => {
-      return state.activities.find((activity: Activity) => activity.id === activityId);
-    };
+    return (activityId: number) => state.activities.find((activity: Activity) => activity.id === activityId);
   }
 
   @Selector()
@@ -61,15 +48,16 @@ export class ActivitiesState {
 
   @Selector()
   static selectActivitiesCount(state: ActivitiesStateModel) {
-    return (programId: number) => {
-      return this.selectProgramActivities(state)(programId).length;
-    };
+    return (programId: number) => this.selectProgramActivities(state)(programId).length;
   }
 
   @Action(FetchData)
   fetchData(ctx: StateContext<ActivitiesStateModel>) {
     return this.api.getActivities().pipe(
       tap((activities: Activity[]) => {
+        const y = addProgramIdProp(activities[0])
+        
+        console.log(activities[0])
         ctx.patchState({
           activities: activities.map(activity => addProgramIdProp(activity))
         });

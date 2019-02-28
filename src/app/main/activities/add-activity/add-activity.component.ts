@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ProgramsState } from '../../programs/programs.state';
-import { AddActivity } from '../activities.state';
 import { map } from 'rxjs/operators';
+import { AddActivity } from '../activities.actions';
 
 @Component({
     selector: 'app-add-activity',
